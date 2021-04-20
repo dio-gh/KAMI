@@ -25,6 +25,7 @@ namespace KAMI
                 case "BCES00052": return new RatchetToD(ipc);
                 case "BCES01503": return new Ratchet3PS3(ipc);
                 case "NPUA80646": return new RatchetDLPS3(ipc);
+                case "NPEA90002": return new GranTurismoHD(ipc);
                 case "BCES01743": return new Killzone1PS3(ipc);
                 case "BCES00081": return new Killzone2PS3(ipc);
                 case "BCUS98234":
