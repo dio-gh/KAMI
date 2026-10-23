@@ -16,7 +16,9 @@ For PCSX2:
 * Use IPC Port 28012
 
 # Compatibility
-The compatibility list can be found [here](https://isjuhn.github.io/index.html).
+The compatibility list is maintained in [the KAMI website](https://isjuhn.github.io/KAMI/compatibility/).
+
+Website documentation lives in [`docs/`](docs/README.md): [quickstart](docs/quickstart.md), [developers](docs/developers.md), and [about / license](docs/about.md). It replaces the separate MkDocs compatibility list.
 
 # Running
 The application will automatically detect if RPCS3 is running and which game is running. If the game is supported it will automatically connect. If it doesn't, make sure IPC is enabled, you can find it under Configuration -> IPC.

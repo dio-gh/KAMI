@@ -1,37 +1,38 @@
 # KAMI website
 
-A small Jekyll site for GitHub Pages: one layout, one stylesheet, a landing page and a 404 page. No browser JavaScript, analytics, external fonts, frontend package manager or third-party theme.
+A Jekyll site for GitHub Pages: two layouts, one stylesheet, and one small theme script. No external fonts, analytics, remote theme, or frontend package manager. The landing page, compatibility list, quickstart, developer guide and about page are all rendered at build time. Navigation, content, native game disclosures and system color preference work without JavaScript.
 
-## Publish on GitHub Pages
+## Publish and migrate
 
-In **Settings → Pages**, select **Deploy from a branch**, choose the branch containing this directory, and select **/docs**. GitHub builds Jekyll automatically; no new Actions workflow is required. Preview on a fork before moving to the upstream repository.
+1. Merge the website changes into KAMI's default branch.
+2. In Settings → Pages, select **Deploy from a branch**, select the default branch, and choose **/docs**. Wait for the Pages build to succeed.
+3. Verify `https://isjuhn.github.io/KAMI/` and its compatibility, quickstart, developers, about and 404 pages.
+4. Only then merge the companion redirect in `isJuhn/isJuhn.github.io` and the retirement notice in `isJuhn/KAMI-Docs`. The legacy root must keep a working link to `/KAMI/compatibility/`; do not redirect it before the new page exists. Stop publishing MkDocs output over that redirect.
 
-`baseurl: /KAMI` is correct for a project repository named KAMI, including a fork. Change it if the repository name changes. Use an empty baseurl for a root user/organization site or root custom domain. GitHub Pages supplies the site origin for the hosting repository; a custom host can set `url` explicitly.
-
-All internal links use Jekyll's URL filters. Do not add `.nojekyll`: that would bypass Liquid and layout processing. The existing compatibility documentation at `https://isjuhn.github.io/` is linked separately.
+Preview on a fork before moving upstream. `baseurl: /KAMI` works for both the upstream project and a fork with the same repository name. GitHub Pages supplies the origin. Change `baseurl` if the repository is renamed; use an empty value for a root user site or custom root domain. All internal links use Jekyll URL filters. Do not add `.nojekyll`.
 
 ## Edit content
 
-- `index.html`: landing copy, screenshot and getting-started notes.
-- `_config.yml`: description, base path and project/download/documentation links.
-- `_layouts/default.html`: metadata, header and footer for future pages.
-- `assets/css/site.css`: styling and responsive layouts.
-- `assets/images/app-preview.png`: screenshot, explicitly labeled as work in progress.
+- `index.html`: landing page and work-in-progress screenshot.
+- `compatibility.html` and `_data/compatibility.yml`: structured support information and historical reports. Keep title IDs, version restrictions, source evidence and release/development distinctions together.
+- `quickstart.md`, `developers.md`, `about.md`: user instructions, contribution guide, history and license.
+- `_config.yml`: navigation, metadata, project links and base path.
+- `_layouts/`: shared shell and article layout.
+- `assets/css/site.css`: both color themes and responsive layouts.
+- `assets/js/theme.js`: optional System / Light / Dark selection. System follows live OS changes; explicit choices persist in local storage. Selecting System removes the override. Storage failure does not prevent selection on the current page.
 
-The download button opens the latest GitHub release. There is no hard-coded version or asset filename to update; the button does not download a file automatically. Requirements and supported emulators come from the project README and should be revisited when releases change them.
+The download button points to the latest GitHub release, not a hard-coded asset. Keep runtime requirements in sync with that release. Development support must not be presented as released or gameplay-tested without evidence. The full MIT notice is reproduced on the about page; preserve it when editing.
 
-The screenshot's OS title bar is clipped with CSS. The file is otherwise unchanged and has no ancillary text metadata. Replace it and remove that CSS rule when a clean application-only capture is available. No game artwork or emulator logos are bundled.
-
-Add future content as Markdown with YAML front matter such as `title: Setup`. The default layout is inherited from `_config.yml`. Add navigation when those pages have useful content.
+The screenshot is labeled as work in progress. CSS clips its 30 px OS title bar; replace the image and remove that rule when a clean capture of the released interface is available.
 
 ## Optional local preview
 
-With an existing Ruby/Bundler installation, review `Gemfile`, then run `bundle install` and `bundle exec jekyll serve` in this directory. Dependency installation is a maintainer action; it is not needed for GitHub's hosted build. Commit the resulting `Gemfile.lock` if local versions need to be frozen for a team. GitHub manages the hosted Jekyll dependency versions.
+With an existing Ruby/Bundler installation, review `Gemfile`, then run `bundle install` and `bundle exec jekyll serve` from this directory. These are optional maintainer installation steps; GitHub provides the hosted Jekyll build. Commit `Gemfile.lock` if the team chooses to freeze local dependencies.
 
-No Ruby, gem or npm package was installed locally during authoring.
+## Validation
 
-## Release checks
+After building, run `python tools/check-site.py docs/_site --base /KAMI` from the repository root. It checks rendered HTML, internal links and fragments, assets, and required pages. Run `node tools/check-theme.cjs` to exercise system changes, saved choices, unavailable storage and reload behavior without browser dependencies.
 
-Check the deployed landing and 404 pages, project-path asset URLs, mobile layouts, keyboard focus and outbound links. Keep the screenshot's development label until it depicts the release being downloaded.
+Check 320 px, 390 px and desktop layouts, both themes, keyboard focus, and all content with scripts blocked. No menu, game list or download action should require JavaScript. Verify the published base-path URLs and custom 404. The social preview intentionally retains the light brand presentation in both themes.
 
-Before committing, inspect the intended website files for personal paths, real names, private email addresses, credentials and image metadata. Use a public GitHub handle and its noreply email for commit attribution. Keep local preview tools, browser profiles and build logs out of this directory.
+Before committing, inspect the diff for personal paths, private names or email addresses, credentials and image metadata. Use a public GitHub handle and noreply address for attribution. Keep local servers, generated builds and logs out of the source directory.

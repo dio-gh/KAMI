@@ -9,10 +9,24 @@ links:
   source: https://github.com/isJuhn/KAMI
   download: https://github.com/isJuhn/KAMI/releases/latest
   releases: https://github.com/isJuhn/KAMI/releases
-  compatibility: https://isjuhn.github.io/index.html
-  setup: https://github.com/isJuhn/KAMI#running
   runtime: https://dotnet.microsoft.com/en-us/download/dotnet/10.0
   license: https://github.com/isJuhn/KAMI/blob/master/LICENSE
+
+navigation:
+  - title: Compatibility
+    url: /compatibility/
+  - title: Quickstart
+    url: /quickstart/
+  - title: Developers
+    url: /developers/
+  - title: About
+    url: /about/
+
+# These are built by GitHub Pages; no remote theme or frontend dependencies.
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
 
 defaults:
   - scope:
