@@ -56,6 +56,10 @@ def check(root, base):
                 target = root / name if not path else root / Path(name).parent / path
             if target.is_dir():
                 target /= "index.html"
+            target = target.resolve()
+            if not target.is_relative_to(root):
+                errors.append(f"{name}: target escapes output directory: {link}")
+                continue
             if not target.is_file():
                 errors.append(f"{name}: missing target: {link}")
                 continue
