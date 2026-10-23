@@ -10,7 +10,7 @@ KAMI is a C# application with a WPF interface and a native [PINE](https://github
 
 ## Build on Windows
 
-You need Git, the **.NET 10 SDK**, Visual Studio C++ build tools, **Meson**, and **Ninja**. The project README specifies the **x64 Native Tools Command Prompt for VS 2026**. The SDK is needed for development; the runtime alone cannot build the project.
+You need Git, the **.NET 10 SDK**, Visual Studio C++ build tools, **Meson**, and **Ninja**. Use the **x64 Native Tools Command Prompt for VS 2026**. The SDK is needed for development; the runtime alone cannot build the project.
 
 Clone the repository with its PINE submodule:
 
