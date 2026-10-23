@@ -32,6 +32,7 @@ class Page(HTMLParser):
 
 
 def check(root, base):
+    root = root.resolve()
     pages = {p.relative_to(root).as_posix(): Page(p.read_text(encoding="utf-8"))
              for p in root.rglob("*.html")}
     errors = []
