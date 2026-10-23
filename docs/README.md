@@ -25,13 +25,41 @@ The download button points to the latest GitHub release, not a hard-coded asset.
 
 The screenshot is labeled as work in progress. CSS clips its 30 px OS title bar; replace the image and remove that rule when a clean capture of the released interface is available.
 
+## What is generated, and what needs review?
+
+No AI service is involved in building or maintaining the site. All published output comes from the checked-in source through Jekyll.
+
+| Content | Source of truth | Maintenance |
+| --- | --- | --- |
+| Navigation, page shell, metadata and internal URLs | `_config.yml` and `_layouts/` | Generated for every page at build time. |
+| Compatibility entries, title counts and machine-readable `compatibility.json` | `_data/compatibility.yml` | Rendered automatically; edit the data once. |
+| Supported title IDs and their handlers | Application `GameManager.cs` | CI compares the documented IDs and handlers against the code. |
+| Version restrictions, release distinctions, limitations and historical ratings | Reviewed source, release notes and testing reports | Curated. CI flags changes to game/camera code for review; it cannot infer playability. |
+| Quickstart, build instructions, runtime requirements and project history | Markdown pages, current release and build files | Review when controls, requirements or releases change. These are not scraped automatically. |
+| Screenshot and social preview | `assets/images/` | Replace deliberately; the screenshot remains labeled as work in progress. |
+| Download destination | GitHub's `/releases/latest` | Follows the latest release without a site edit. |
+
+When game or camera code changes, the Website check asks for a compatibility review. Update affected notes, source links and release information, then run `python tools/check-compatibility.py --record-reviewed-source` and commit the resulting hash file. Hashes normalize line endings and contain repository-relative paths only. Recording hashes acknowledges a review; it does not generate or certify gameplay claims. Even source-only changes that leave title IDs unchanged are flagged.
+
+When making a release, revisit the quickstart's release tag, runtime requirement, compatibility release metadata, and any source-only notes that have become released. Keep the history selective rather than duplicating every release note.
+
 ## Optional local preview
 
 With an existing Ruby/Bundler installation, review `Gemfile`, then run `bundle install` and `bundle exec jekyll serve` from this directory. These are optional maintainer installation steps; GitHub provides the hosted Jekyll build. Commit `Gemfile.lock` if the team chooses to freeze local dependencies.
 
 ## Validation
 
-After building, run `python tools/check-site.py docs/_site --base /KAMI` from the repository root. It checks rendered HTML, internal links and fragments, assets, and required pages. Run `node tools/check-theme.cjs` to exercise system changes, saved choices, unavailable storage and reload behavior without browser dependencies.
+The **Website** GitHub Actions check builds with GitHub's official Jekyll action and runs all three checks on relevant pushes and pull requests. It has read-only permissions and does not deploy. GitHub Pages remains responsible for deployment. Action revisions are pinned; the build toolchain is GitHub's Pages toolchain, not a separate frontend dependency tree.
+
+After building locally, run these from the repository root:
+
+```console
+python tools/check-site.py docs/_site --base /KAMI
+python tools/check-compatibility.py docs/_site/compatibility.json
+node tools/check-theme.cjs
+```
+
+These check rendered HTML, internal links and fragments, assets, required pages, title ID/handler coverage, reviewed game/camera source, and theme behavior (system changes, saved choices, unavailable storage and reloads). They use only Python/Node standard libraries. They do not run emulator gameplay tests or validate external websites.
 
 Check 320 px, 390 px and desktop layouts, both themes, keyboard focus, and all content with scripts blocked. No menu, game list or download action should require JavaScript. Verify the published base-path URLs and custom 404. The social preview intentionally retains the light brand presentation in both themes.
 
